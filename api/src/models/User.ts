@@ -38,6 +38,4 @@ const userSchema = new Schema<UserInterface>({
  * The first parameter of the model is the model name then the schema definition
  * */
 
-const User = model<UserInterface>("User", userSchema);
-
-module.exports = User;
+export const User = model<UserInterface>("User", userSchema);

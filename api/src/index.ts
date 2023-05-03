@@ -1,7 +1,9 @@
 import express, { Express, Response, Request } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import bcrypt from "bcrypt";
 import mongoose from "mongoose";
+import { User } from "./models/User";
 dotenv.config();
 
 const app: Express = express();
@@ -22,23 +24,40 @@ app.get("/test", (req: Request, res: Response) => {
   res.json("Test okay");
 });
 
-app.post("/register", (req: Request, res: Response) => {
-  const {
-    firstName,
-    lastName,
-    email,
-    emailConfirm,
-    password,
-    passwordConfirm,
-  } = req.body;
-  res.json({
-    firstName,
-    lastName,
-    email,
-    emailConfirm,
-    password,
-    passwordConfirm,
-  });
+app.post("/register", async (req: Request, res: Response) => {
+  try {
+    let { firstName, lastName, email, password } = req.body;
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      password: bcrypt.genSalt(10, (err, salt) => {
+        if (err) {
+          throw new Error();
+        }
+        bcrypt.hash(password, salt, (err, hash) => {
+          if (err) {
+            throw new Error();
+          }
+          password = hash;
+        });
+      }),
+    });
+    res.json(newUser);
+  } catch (error) {
+    res.status(422).json(error);
+  }
+});
+
+app.post(`login`, async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  try {
+    const userToLogin = await User.findOne({ email });
+    if (!userToLogin) {
+      return `User does not exist`;
+    } else {
+    }
+  } catch (error) {}
 });
 
 const port = 5000;

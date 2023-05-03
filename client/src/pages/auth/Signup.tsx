@@ -6,6 +6,7 @@ import { Header } from "../../components";
 
 function registerUser(e) {
   e.preventDefault();
+
   let firstName, lastName, email, password;
   // the default base url has been defined in App.tsx
   axios.post(`/register`, {
@@ -14,6 +15,8 @@ function registerUser(e) {
     email,
     password,
   });
+
+  alert(`Registration failed. Try again later.`);
 }
 
 export default function Signup() {

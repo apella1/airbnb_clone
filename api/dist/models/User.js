@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.User = void 0;
 const mongoose_1 = require("mongoose");
 // schema corresponding to the document interface
 const userSchema = new mongoose_1.Schema({
@@ -29,5 +30,4 @@ const userSchema = new mongoose_1.Schema({
 /**
  * The first parameter of the model is the model name then the schema definition
  * */
-const User = (0, mongoose_1.model)("User", userSchema);
-module.exports = User;
+exports.User = (0, mongoose_1.model)("User", userSchema);
